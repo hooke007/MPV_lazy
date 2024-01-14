@@ -10,6 +10,8 @@ ExternalProject_Add(ffmpeg
         libsrt
         libass
         libbluray
+        libdvdnav
+        libdvdread
         libmodplug
         libpng
         libsoxr
@@ -34,7 +36,8 @@ ExternalProject_Add(ffmpeg
         libva
     GIT_REPOSITORY https://github.com/FFmpeg/FFmpeg.git
     SOURCE_DIR ${SOURCE_LOCATION}
-    GIT_CLONE_FLAGS "--filter=tree:0"
+    GIT_CLONE_FLAGS "--sparse --filter=tree:0"
+    GIT_CLONE_POST_COMMAND "sparse-checkout set --no-cone /* !tests/ref/fate"
     UPDATE_COMMAND ""
     CONFIGURE_COMMAND ${EXEC} CONF=1 <SOURCE_DIR>/configure
         --cross-prefix=${TARGET_ARCH}-
@@ -53,6 +56,8 @@ ExternalProject_Add(ffmpeg
         --enable-vapoursynth
         --enable-libass
         --enable-libbluray
+        --enable-libdvdnav
+        --enable-libdvdread
         --enable-libfreetype
         --enable-libfribidi
         --enable-libfontconfig
@@ -83,6 +88,7 @@ ExternalProject_Add(ffmpeg
         --enable-nvdec
         --enable-nvenc
         --enable-amf
+        --enable-opengl
         --enable-vaapi
         --disable-doc
         --disable-ffplay
@@ -90,7 +96,7 @@ ExternalProject_Add(ffmpeg
         --disable-vdpau
         --disable-videotoolbox
         --disable-decoder=libaom_av1
-        ${ffmpeg_mlp}
+        ${ffmpeg_lto}
         --extra-cflags='-Wno-error=int-conversion'
         "--extra-libs='${ffmpeg_extra_libs}'" # -lstdc++ / -lc++ needs by libjxl and shaderc
     BUILD_COMMAND ${MAKE}

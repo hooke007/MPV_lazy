@@ -4,6 +4,7 @@ list(APPEND ep
     xz
     lzo
     uchardet
+    libsamplerate
     rubberband
     zlib
     zstd
@@ -74,9 +75,7 @@ list(APPEND ep
     readline
     cryptopp
     sqlite
-    libuv
     libsodium
-    megasdk
     mesa
 )
 foreach(package IN LISTS ep)
@@ -95,7 +94,7 @@ list(LENGTH ep ep_length)
 message(STATUS "Parsing ${ep_length} packages")
 
 # Exclude packages which dont depend on mpv when update
-list(APPEND removed "termcap" "readline" "cryptopp" "sqlite" "libuv" "libsodium" "megasdk" "libsixel" "curl" "mbedtls" "mesa")
+list(APPEND removed "termcap" "readline" "cryptopp" "sqlite" "libsodium" "libsixel" "curl" "mbedtls" "mesa")
 list(REMOVE_ITEM repo ${removed})
 list(REMOVE_ITEM ep ${removed})
 list(TRANSFORM repo APPEND "-force-update" OUTPUT_VARIABLE update)

@@ -18,7 +18,7 @@ function(cleanup _name _last_step)
         if(_build_in_source)
             set(remove_cmd "git -C <SOURCE_DIR> clean -dfx")
         else()
-            set(remove_cmd "rm -rf <BINARY_DIR>/* && git -C <SOURCE_DIR> clean -df")
+            set(remove_cmd "find <BINARY_DIR> -mindepth 1 -delete && git -C <SOURCE_DIR> clean -df")
         endif()
         set(COMMAND_FORCE_UPDATE COMMAND bash -c "git -C <SOURCE_DIR> am --abort 2> /dev/null || true"
                                  COMMAND ${stamp_dir}/reset_head.sh
@@ -46,15 +46,13 @@ function(cleanup _name _last_step)
         COMMENT "Deleting build, install stamp files of ${_name} package"
     )
 
-    if(ALWAYS_REMOVE_BUILDFILES)
-        ExternalProject_Add_Step(${_name} postremovebuild
-            DEPENDEES ${_last_step}
-            COMMAND ${EXEC} ${remove_cmd}
-            ${COMMAND_FORCE_UPDATE}
-            LOG 1
-            COMMENT "Deleting build directory of ${_name} package after install"
-        )
-    endif()
+    ExternalProject_Add_Step(${_name} postremovebuild
+        DEPENDEES ${_last_step}
+        COMMAND ${EXEC} ${remove_cmd}
+        ${COMMAND_FORCE_UPDATE}
+        LOG 1
+        COMMENT "Deleting build directory of ${_name} package after install"
+    )
 
     ExternalProject_Add_Step(${_name} removebuild
         DEPENDEES fullclean

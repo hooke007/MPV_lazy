@@ -1,18 +1,20 @@
 ExternalProject_Add(rubberband
+    DEPENDS
+        libsamplerate
     GIT_REPOSITORY https://github.com/breakfastquay/rubberband.git
     SOURCE_DIR ${SOURCE_LOCATION}
     GIT_CLONE_FLAGS "--filter=tree:0"
     GIT_REMOTE_NAME origin
     GIT_TAG default
     UPDATE_COMMAND ""
-    CONFIGURE_COMMAND ${EXEC} CONF=1 meson <BINARY_DIR> <SOURCE_DIR>
+    CONFIGURE_COMMAND ${EXEC} CONF=1 meson setup <BINARY_DIR> <SOURCE_DIR>
         --prefix=${MINGW_INSTALL_PREFIX}
         --libdir=${MINGW_INSTALL_PREFIX}/lib
         --cross-file=${MESON_CROSS}
         --buildtype=release
         --default-library=static
         -Dfft=builtin
-        -Dresampler=builtin
+        -Dresampler=libsamplerate
         -Djni=disabled
     BUILD_COMMAND ${EXEC} ninja -C <BINARY_DIR>
     INSTALL_COMMAND ${EXEC} ninja -C <BINARY_DIR> install

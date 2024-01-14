@@ -7,7 +7,6 @@ ExternalProject_Add(libzvbi
     GIT_CLONE_FLAGS "--filter=tree:0"
     GIT_REMOTE_NAME origin
     GIT_TAG main
-    PATCH_COMMAND ${EXEC} git am --3way ${CMAKE_CURRENT_SOURCE_DIR}/libzvbi-*.patch
     UPDATE_COMMAND ""
     CONFIGURE_COMMAND ${EXEC} <SOURCE_DIR>/autogen.sh && CONF=1 <SOURCE_DIR>/configure
         --host=${TARGET_ARCH}
@@ -21,6 +20,8 @@ ExternalProject_Add(libzvbi
         --disable-bktr
         --disable-nls
         --disable-proxy
+        --disable-examples
+        --disable-tests
     BUILD_COMMAND ${MAKE}
     INSTALL_COMMAND ${MAKE} install
     BUILD_IN_SOURCE 1
