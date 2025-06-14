@@ -91,6 +91,18 @@ ExternalProject_Add(ffmpeg
         --disable-vdpau
         --disable-videotoolbox
         --disable-decoder=libaom_av1
+        --disable-muxers
+        --enable-muxer=image2
+        --disable-encoders
+        --enable-encoder=av1_nvenc
+        --enable-encoder=av1_qsv
+        --enable-encoder=av1_amf
+        --enable-encoder=av1_mf
+        --enable-encoder=av1_vaapi
+        --enable-encoder=libjxl
+        --enable-encoder=png
+        --enable-encoder=rawvideo
+        --enable-encoder=libwebp
         ${ffmpeg_lto}
         --extra-cflags='-Wno-error=int-conversion'
         "--extra-libs='${ffmpeg_extra_libs}'" # -lstdc++ / -lc++ needs by libjxl and shaderc
